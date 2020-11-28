@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package analizador.lexico;
+package generador.de.analizadores.lexicos;
 
 /**
  *
  * @author Equipo
  */
-public class AnalizadorLexico {
+public class GeneradorDeAnalizadoresLexicos {
 
     /**
      * @param args the command line arguments
