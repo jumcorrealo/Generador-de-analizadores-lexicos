@@ -5,6 +5,8 @@
  */
 package Automatas;
 
+import java.util.ArrayList;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,7 +18,7 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author Equipo
+ * @author andre
  */
 public class AFN_Lambda {
 
@@ -281,9 +283,7 @@ public class AFN_Lambda {
         return result;
     }
 
-    public sta AFN
-
-    AFN_LambdaToAFN(AFN_Lambda afnl) {
+    public AFN AFN_LambdaToAFN(AFN_Lambda afnl) {
 
         AFN afn = new AFN();
         int rowsNumber = afnl.getStates().size();
@@ -345,30 +345,11 @@ public class AFN_Lambda {
                 states2 = ProcessStatesWithSymbol(states, symbol, afnl); // y los estados resultantes son states2
                 Collections.sort(states2);
 
-                //System.out.print("$[{");
-                for (int k = 0; k < states2.size(); k++) {
-                    //System.out.print(states2.get(k));
-                    if (k != states2.size() - 1) {
-                        //System.out.print(",");
-                    };
-                }
-
-                //System.out.print("}] = ");
                 // esta son las nuevas transiciones para el estado y el simbolo en el nuevo AFN
                 ArrayList<String> states3 = new ArrayList<>();
                 states3 = calcularMuchasLambdaClausura(states2);
                 Collections.sort(states3);
-                //System.out.print("{");
 
-                for (int k = 0; k < states3.size(); k++) {
-                    //System.out.print(states3.get(k));
-                    if (k != states3.size() - 1) {
-                        //System.out.print(",");
-                    };
-                }
-
-                //System.out.print("}.");
-                //System.out.println("");
                 newDelta[i][j] = states3;
             }
 
@@ -387,15 +368,13 @@ public class AFN_Lambda {
         }
 
         afn.initializeAFNwithData(newSigma, afnl.getStates(), afnl.getQ(), newFinalStates, newDelta);
-        //System.out.println("\n\n");
-        //System.out.println("Terminando transformacion de AFN_Lambda a AFN\n\n");
 
         return afn;
     }
 
     ;
 //***************************DE AFNL A AFN************************************
-//***************************GETTERS Y SETTERS************************************    public ArrayList<Character> getSigma() {
+//***************************GETTERS Y SETTERS************************************    
 
 
     public ArrayList<Character> getSigma() {
@@ -434,17 +413,15 @@ public class AFN_Lambda {
         return delta;
     }
 
-//***************************DE AFNL A AFN************************************
-//***************************GETTERS Y SETTERS************************************
     public void setDelta(ArrayList<String>[][] delta) {
         this.delta = delta;
     }
-
 //***************************GETTERS Y SETTERS************************************
+
     public static void main(String[] args) throws Exception {
         AFN_Lambda afnl = new AFN_Lambda();
 
-        afnl.initializeAFD("AFN_Lambda_entrega.txt");
+        //afnl.initializeAFD("AFN_Lambda_entrega.txt");
     }
 
 }
