@@ -44,7 +44,7 @@ public class AFN_Lambda {
         }
     }
 
-    public void initializeAFD(String fileRoute) throws FileNotFoundException, IOException {
+    public void initializeAFN_Lambda(String fileRoute) throws FileNotFoundException, IOException {
 
         File file = new File(fileRoute);
 
@@ -250,7 +250,6 @@ public class AFN_Lambda {
 
         return muchasLambdaClausuras;
     }
-//***************************DE AFNL A AFN************************************
 
     public static ArrayList<String> ProcessStatesWithSymbol(ArrayList<String> states, String symbol, AFN_Lambda afnl) {
 
@@ -283,97 +282,7 @@ public class AFN_Lambda {
         return result;
     }
 
-    public AFN AFN_LambdaToAFN(AFN_Lambda afnl) {
-
-        AFN afn = new AFN();
-        int rowsNumber = afnl.getStates().size();
-        int columnsNumber = afnl.getSigma().size();
-
-        ArrayList<String>[][] newDelta = new ArrayList[rowsNumber][columnsNumber]; // este es el delta del nuevo AFN
-        ArrayList<String> newFinalStates = new ArrayList<>();//estos son los nuevos estados de aceptación
-        ArrayList<Character> newSigma = new ArrayList<>();
-
-        for (int u = 0; u < afnl.getSigma().size() - 1; u++) {
-
-            newSigma.add(afnl.getSigma().get(u));
-
-        }
-        ArrayList<String> comparación = new ArrayList<>();//estos son los nuevos estados de aceptación
-        //inicializando newDelta
-        for (int i = 0; i < afnl.getStates().size(); i++) {
-            for (int j = 0; j < afnl.getSigma().size(); j++) {
-                newDelta[i][j] = new ArrayList<String>();
-            }
-        }
-
-        //calculando los nuevos estados de aceptación
-        for (int i = 0; i < afnl.getStates().size(); i++) {
-
-            comparación.clear();
-            comparación = (ArrayList<String>) afnl.calcularLambdaClausura(afnl.getStates().get(i)).clone();
-
-            for (int j = 0; j < afnl.getFinalStates().size(); j++) {
-
-                if (comparación.contains(afnl.getFinalStates().get(j))) {
-
-                    if (!newFinalStates.isEmpty()) {
-
-                        if (!newFinalStates.contains(afnl.getStates().get(i))) {
-                            newFinalStates.add(afnl.getStates().get(i));
-                        }
-
-                    } else {
-                        newFinalStates.add(afnl.getStates().get(i));
-                    }
-
-                }
-
-            }
-
-        }
-
-        Collections.sort(newFinalStates);
-
-        //Llenando la matriz newDelta
-        for (int i = 0; i < rowsNumber; i++) {
-            for (int j = 0; j < columnsNumber - 1; j++) {
-                ArrayList<String> states = new ArrayList<>();
-                states = afnl.calcularLambdaClausura(afnl.getStates().get(i));// Aqui inicia el proceso de calcular la lambda clausura de un estado
-                String symbol = Character.toString(afnl.getSigma().get(j));
-
-                ArrayList<String> states2 = new ArrayList<>();//Ahora se mire a donde se llega con un simbolo y la lambda clausura del estado anterior
-                states2 = ProcessStatesWithSymbol(states, symbol, afnl); // y los estados resultantes son states2
-                Collections.sort(states2);
-
-                // esta son las nuevas transiciones para el estado y el simbolo en el nuevo AFN
-                ArrayList<String> states3 = new ArrayList<>();
-                states3 = calcularMuchasLambdaClausura(states2);
-                Collections.sort(states3);
-
-                newDelta[i][j] = states3;
-            }
-
-        }
-
-        for (int u = 0; u < newDelta.length; u++) {
-
-            for (int v = 0; v < newDelta[u].length; v++) {
-
-                if (newDelta[u][v].isEmpty()) {
-                    newDelta[u][v].add(afnl.getStates().get(u));
-                }
-
-            }
-
-        }
-
-        afn.initializeAFNwithData(newSigma, afnl.getStates(), afnl.getQ(), newFinalStates, newDelta);
-
-        return afn;
-    }
-
-    ;
-//***************************DE AFNL A AFN************************************
+    
 //***************************GETTERS Y SETTERS************************************    
 
 
