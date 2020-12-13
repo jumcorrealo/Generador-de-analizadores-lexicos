@@ -86,4 +86,56 @@ public class AFN {
         //System.out.println("");
 
     }
+    
+//***************************GETTERS Y SETTERS************************************ 
+
+    public ArrayList<Character> getSigma() {
+        return sigma;
+    }
+
+    public void setSigma(ArrayList<Character> sigma) {
+        this.sigma = sigma;
+    }
+
+    public ArrayList<String> getStates() {
+        return states;
+    }
+
+    public void setStates(ArrayList<String> states) {
+        this.states = states;
+    }
+
+    public ArrayList<String> getEndsStates() {
+        return endsStates;
+    }
+
+    public void setEndsStates(ArrayList<String> endsStates) {
+        this.endsStates = endsStates;
+    }
+
+    public String getQ() {
+        return q;
+    }
+
+    public void setQ(String q) {
+        this.q = q;
+    }
+
+    public ArrayList<String> getFinalStates() {
+        return finalStates;
+    }
+
+    public void setFinalStates(ArrayList<String> finalStates) {
+        this.finalStates = finalStates;
+    }
+
+    public ArrayList<String>[][] getDelta() {
+        return delta;
+    }
+
+    public void setDelta(ArrayList<String>[][] delta) {
+        this.delta = delta;
+    }
+    
+//***************************GETTERS Y SETTERS************************************       
 }
