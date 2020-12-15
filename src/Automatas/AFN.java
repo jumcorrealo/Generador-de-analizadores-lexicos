@@ -6,6 +6,7 @@
 package Automatas;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -259,6 +260,38 @@ public class AFN {
 
         //verificando si esta en estado de aceptacion
         return finale;
+    }
+    public void hallarEstadosInaccesibles() {
+
+        ArrayList<String> accesibles = new ArrayList<>();
+
+        accesibles.add(this.getQ());
+
+        for (int j = 0; j < this.getDelta().length; j++) {
+            String estadoActual = this.getStates().get(j);
+            for (int k = 0; k < this.getDelta()[j].length; k++) {
+                if (this.getDelta()[j][k].isEmpty()) {
+                    continue;
+                } else {
+                    for (String transicion : this.getDelta()[j][k]) {
+                        if (!estadoActual.equals(transicion)) {
+                            if (accesibles.contains(estadoActual)) {
+                                if (!accesibles.contains(transicion)) {
+                                    accesibles.add(transicion);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Collections.sort(accesibles);
+        for (int i = 0; i < this.states.size(); i++) {
+            if (!accesibles.contains(this.states.get(i))) {
+               
+            }
+        }
+
     }
     
     public boolean procesarCadena(String string) {

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Automatas;
-
+import java.util.Scanner;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +15,38 @@ import java.util.Collections;
  */
 public class ElAutomata {
 
+
+
+    
+//
+    
+public static ArrayList<AFN> InicializadorDeAutomatas(int numeroDA) throws IOException{
+        int i;
+        ArrayList<AFN> afnlist = new ArrayList();
+        afnlist.clear();
+        AFN_Lambda microafnl = new AFN_Lambda();
+        AFN microafn = new AFN();
+        for(i=0;i<numeroDA;i++){
+        microafnl.initializeAFN_Lambda("prueba"+i+".txt");
+        microafn = AFN_LambdaToAFN(microafnl);
+        afnlist.add(microafn);
+        }
+        return afnlist;
+}
+
+public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis){
+    int i;
+    boolean t;
+    for(i=0;i<afnlis.size();i++){
+        t = afnlis.get(i).procesarCadena(cadena);
+        if(t){
+            // cambiar el sout por lo de carlos
+            System.out.println("se acepto dentro de los automatas");
+           return;
+        }
+    }
+    System.out.println("Error de sintaxis o no existe un token asociado");
+}
 //***************************DE AFNL A AFN************************************
     public static AFN AFN_LambdaToAFN(AFN_Lambda afnl) {
 
@@ -320,8 +352,9 @@ public class ElAutomata {
     public static AFD AFN_LambdaToAFD(AFN_Lambda afnl) {
 
         AFN afn = new AFN();
-
+        
         afn = AFN_LambdaToAFN(afnl);
+        afn.hallarEstadosInaccesibles();
         return AFNtoAFD(afn);
 
     }
@@ -331,21 +364,20 @@ public class ElAutomata {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        
-        AFN_Lambda afnl = new AFN_Lambda();
-        afnl.initializeAFN_Lambda("prueba.txt");
-        afnl.showDelta();
-        /*AFN_Lambda afnl = new AFN_Lambda();
-        afnl.initializeAFN_Lambda("AFN_Lambda1.txt");
-        afnl.showDelta();
-        AFN afn = new AFN();
-        afn = AFN_LambdaToAFN(afnl);
-        afn.showDelta();
-        afn.procesarCadena("c2131");
-        AFD afd = new AFD();
-        afd = AFNtoAFD(afn);
-        /*afd.showDelta();
-        afd.processStringWithDetails("abaa");*/
+     ArrayList<AFN> afnlist;
+     afnlist = InicializadorDeAutomatas(1);
+     Scanner sc = new Scanner(System.in);
+        String opciones = ""; 
+        boolean exit = false;
+        while(exit != true){
+           opciones = sc.nextLine();
+           if(opciones.equals("exit")){
+           exit = true;
+           
+           }else{
+           ProbarEnTodosLosAutomatas(opciones,afnlist);
+           }
+        }
     }
 
 }
