@@ -30,7 +30,7 @@ public class ElAutomata {
             newSigma.add(afnl.getSigma().get(u));
 
         }
-        ArrayList<String> comparación = new ArrayList<>();//estos son los nuevos estados de aceptación
+        ArrayList<String> comparacion = new ArrayList<>();//estos son los nuevos estados de aceptación
         //inicializando newDelta
         for (int i = 0; i < afnl.getStates().size(); i++) {
             for (int j = 0; j < afnl.getSigma().size(); j++) {
@@ -41,12 +41,12 @@ public class ElAutomata {
         //calculando los nuevos estados de aceptación
         for (int i = 0; i < afnl.getStates().size(); i++) {
 
-            comparación.clear();
-            comparación = (ArrayList<String>) afnl.calcularLambdaClausura(afnl.getStates().get(i)).clone();
+            comparacion.clear();
+            comparacion = (ArrayList<String>) afnl.calcularLambdaClausura(afnl.getStates().get(i)).clone();
 
             for (int j = 0; j < afnl.getFinalStates().size(); j++) {
 
-                if (comparación.contains(afnl.getFinalStates().get(j))) {
+                if (comparacion.contains(afnl.getFinalStates().get(j))) {
 
                     if (!newFinalStates.isEmpty()) {
 

@@ -25,33 +25,19 @@ public class Writer {
     try {
       AFNLambda afn = new AFNLambda(regexp);
       PrintWriter writer = new PrintWriter(nombreArchivo + ".txt", "UTF-8");
-      writer.println("REGULAR EXPRESSION: " + regexp);
-      writer.println("REGULAR EXPRESSION IN POSTFIX: " + afn.getPostFixRegExp());
-      writer.println("SYMBOL LIST: " + afn.getListaSimbolos());
-      writer.println("TRANSITIONS LIST: " + afn.getListaTransiciones());
-      writer.println("FINAL STATE: " + afn.getEstadoFinal().toString());
-      writer.println("STATES: " + afn.getEstados().toString());
-      writer.println("INITIAL STATE: " + afn.getEstadoInicial().toString());
+      writer.println("#alphabet");
+      writer.println(afn.getListaSimbolos());
+      writer.println("#states");
+      writer.println(afn.getEstados().toString());
+      writer.println("#initial");
+      writer.println(afn.getEstadoInicial().toString());
+      writer.println("#transitions");
+      writer.println(afn.getListaTransiciones());
       writer.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  /*
-   * public static String regexp; public static void main(String[] args) throws
-   * Exception {
-   * 
-   * // ArrayList<Declaracion> declaraciones = new ArrayList<>();
-   * ArrayList<Definicion> definiciones = new ArrayList<>();
-   * 
-   * definiciones.add(new Definicion("definicion1", "b+(ab)*", "null"));
-   * definiciones.add(new Definicion("definicion2", "([)+", "null"));
-   * definiciones.add(new Definicion("definicion3", "(0|1|2|3|4|5|6|7|8|9)+",
-   * "null")); definiciones.add(new Definicion("definicion4",
-   * "(0|1|2|3|4|5|6|7|8|9)?", "null"));
-   * 
-   * int cont = 1; for (Definicion definicion : definiciones) { Writer wr = new
-   * Writer(definicion, "definicion"+cont); wr.writeFile(); cont++; } }
-   */
+
 }
