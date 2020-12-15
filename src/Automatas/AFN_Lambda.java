@@ -45,7 +45,7 @@ public class AFN_Lambda {
     }
 
     public void initializeAFN_Lambda(String fileRoute) throws FileNotFoundException, IOException {
-
+        int cont = 0;
         File file = new File(fileRoute);
 
         if (!file.exists()) {
@@ -60,73 +60,127 @@ public class AFN_Lambda {
 
             switch (line) {
                 case ("#alphabet"):
-
+                    cont = 1;
                     while (!(line = br.readLine()).startsWith("#")) {
 
-                        if (line.contains("-")) {   //Rango de caracteres Ej:  a-z
-                            char ch = line.charAt(0);   //Primer caracter del rango
+                        
+                            char ch = line.charAt(cont);   //el carcater 0 es [
+                            
+                            this.sigma.add(ch); //Agrego el primer caracter
 
-                            //Mientras no se llegue al final del rango
-                            while (ch != line.charAt(2)) {
-                                //Agregar ch
+                            cont++;
+                            ch = line.charAt(cont); // y lo dejo parado en una coma
+                            //Mientras sea diferente del caracter final
+                            while (ch != ']') {
+                               
+                                cont++;
+                                cont++;
+                                ch = line.charAt(cont); //siempre estamos parados en una coma en este punto
+      
                                 this.sigma.add(ch);
-                                //Pasar al siguiente caracter ASCII                                    
-                                ch = (char) ((int) ch + 1);
-
-                                if (ch == line.charAt(2)) { //Si se llega al Ãºtimo, agregarlo
-                                    //Agregar ch                                        
-                                    this.sigma.add(ch);
-                                }
+                                cont++;
+                                ch = line.charAt(cont);
+                                
                             }
-                        }
                     }
                     this.sigma.add('$');
+                    
+
 
                 case ("#states"):
-
+                    cont = 1;
                     while (!(line = br.readLine()).startsWith("#")) {
-                        this.states.add(line);
-                        //System.out.println("Se agregÃ³ "+line+" a los estados");
-                    }
+                        
+                        char ch = line.charAt(cont);
+                        
+                        String st = "";
+                        while (ch != ']') {
+                        
+                            while(ch != ',' && ch != ']'){
 
-                    //DespuÃ©s de aÃ±adir todo el alfabeto y estados, se tiene el tamaÃ±o de la matriz de transiciÃ³n
+                                st = st + ch;
+                                cont++;
+                                ch = line.charAt(cont);
+                                
+                            }
+                            this.states.add(st);
+                            st = "";
+                            
+                            if(ch != ']'){
+                              cont = cont + 2;
+                              
+                              ch = line.charAt(cont);  // Aqui puede haber problema de limites
+                            }
+                             
+                            }
+                    }
+                    //Inicializamos delta
+                    this.finalStates.add(this.states.get(this.states.size()-1));//Aqui agrego los estados de aceptación
                     this.initializeDelta(this.states.size(), this.sigma.size());
                 //System.out.println("Se creo una matriz de " + this.states.size() + " por " + this.sigma.size());
 
                 case ("#initial"):
-
+                    cont = 1;
                     while (!(line = br.readLine()).startsWith("#")) {
-                        this.q = line;
-                        //System.out.println("Se agregÃ³ "+line+" a los estados iniciales");
+                        char ch = line.charAt(cont);
+                        String st = "";
+                        while (ch != ']') {
+                        st = st + ch;
+                        cont++;
+                        ch = line.charAt(cont);  
+                        }
+                        this.q = st;
                     }
 
-                case ("#accepting"):
 
-                    while ((!(line = br.readLine()).startsWith("#")) && this.states.contains(line)) {
-                        this.finalStates.add(line);
-                        //System.out.println("Se agregÃ³ "+line+" a los estados de aceptaciÃ³n");
-                    }
 
                 case ("#transitions"):
-
+                    cont = 1;
                     while ((line = br.readLine()) != null) {
-                        tokenizer = new StringTokenizer(line, " :>;");
-
-                        String currentState = tokenizer.nextToken();
-                        Character currentChar = tokenizer.nextToken().charAt(0);
-                        String transition;
-
-                        //System.out.println("Estado " + currentState);
-                        //System.out.println("Caracter " + currentChar);
-                        if (this.states.contains(currentState) && this.sigma.contains(currentChar)) {
-
-                            while (tokenizer.hasMoreElements()) {
-                                transition = tokenizer.nextToken();
-                                //System.out.println(this.states.indexOf(currentState) + " " + this.sigma.indexOf(currentChar));
-                                this.delta[this.states.indexOf(currentState)][this.sigma.indexOf(currentChar)].add(transition);
-
+                        int estadoPos = 0;
+                        int simboloPos = 0;
+                        char ch = line.charAt(cont);
+                        String st = "";
+                        while (ch != ']') {
+                            while(ch != ':'){
+                                st = st + ch;
+                                cont++;
+                                ch = line.charAt(cont);  
                             }
+                           
+                            estadoPos = getPosEstado(st);
+                            st = "";
+                            cont++;
+                            ch = line.charAt(cont);
+                            while(ch != '>'){
+                                
+                                st = st + ch;
+                                cont++;
+                                ch = line.charAt(cont);
+                            }
+                            
+                            simboloPos = getPosSimbolo(st);
+                            st = "";
+                            cont++;
+                            ch = line.charAt(cont);
+                            while(ch != ',' && ch != ']'){
+                                st = st + ch;
+                                cont++;
+                                ch = line.charAt(cont);
+                            }
+                            
+
+                            this.delta[estadoPos][simboloPos].add(st);
+                            st = "";
+                            if(ch != ']'){
+                              cont = cont + 2;
+                              ch = line.charAt(cont);  // Aqui puede haber problema de limites
+                            }
+                             
+                            
+                            
                         }
+                        
                     }
                 default:
 
@@ -139,7 +193,6 @@ public class AFN_Lambda {
     public int getPosEstado(String estado) {
         int val = -1; // aqui se asignan posiciones a estados que no existen, posible solución es hacer val = -1 pero no se si afecte el codigo de cesar
         for (int i = 0; i < this.states.size(); i++) {
-//                System.out.println(this.states.get(i));
             if (estado.equals(this.states.get(i))) {
                 val = i;
                 break;
@@ -150,8 +203,7 @@ public class AFN_Lambda {
 
     public int getPosSimbolo(String simbolo) {
         int val = -1;
-        for (int i = 0; i < this.sigma.size(); i++) {
-//                System.out.println(this.states.get(i));
+        for (int i = 0; i < this.sigma.size(); i++) { 
             if (simbolo.equals(Character.toString(this.sigma.get(i)))) {
                 val = i;
                 break;
@@ -283,6 +335,24 @@ public class AFN_Lambda {
     }
 
     
+     public void showSigma() {
+        System.out.println("#Alphabet:");
+        if(this.sigma.size()>2){
+        System.out.print(this.sigma.get(0)+"-");
+        System.out.print(this.sigma.get(this.sigma.size()-2));
+        }else{
+        System.out.println(this.sigma.get(0));
+        }
+        System.out.println("");
+    }
+
+    public void showStates() {
+        System.out.println("#States:");
+        for (int i = 0; i < this.states.size(); i++) {
+            System.out.println(this.states.get(i));
+        }
+    }
+    
 //***************************GETTERS Y SETTERS************************************    
 
 
@@ -326,11 +396,28 @@ public class AFN_Lambda {
         this.delta = delta;
     }
 //***************************GETTERS Y SETTERS************************************
+    
+    public void showDelta() {
+        System.out.println("#Transitions:");
+        for (int i = 0; i < this.states.size(); i++) {
+            for (int j = 0; j < this.sigma.size(); j++) {
+                if(!this.delta[i][j].isEmpty()){
+                System.out.print(this.states.get(i)+":");
+                System.out.print(this.sigma.get(j)+">");
+                for(int k=0;k<this.delta[i][j].size();k++){
+                    System.out.print(this.delta[i][j].get(k));
+                    if(k<this.delta[i][j].size()-1){
+                    System.out.print(";");
+                    }
+                }
+                }
+                if(!this.delta[i][j].isEmpty()){
+                    System.out.println("");
+                }
+            }
+        }
 
-    public static void main(String[] args) throws Exception {
-        AFN_Lambda afnl = new AFN_Lambda();
-
-        //afnl.initializeAFD("AFN_Lambda_entrega.txt");
     }
+
 
 }

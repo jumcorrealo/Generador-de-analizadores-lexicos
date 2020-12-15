@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package Automatas;
-
+import java.util.Scanner;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -14,6 +15,38 @@ import java.util.Collections;
  */
 public class ElAutomata {
 
+
+
+    
+//
+    
+public static ArrayList<AFN> InicializadorDeAutomatas(int numeroDA) throws IOException{
+        int i;
+        ArrayList<AFN> afnlist = new ArrayList();
+        afnlist.clear();
+        AFN_Lambda microafnl = new AFN_Lambda();
+        AFN microafn = new AFN();
+        for(i=0;i<numeroDA;i++){
+        microafnl.initializeAFN_Lambda("prueba"+i+".txt");
+        microafn = AFN_LambdaToAFN(microafnl);
+        afnlist.add(microafn);
+        }
+        return afnlist;
+}
+
+public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis){
+    int i;
+    boolean t;
+    for(i=0;i<afnlis.size();i++){
+        t = afnlis.get(i).procesarCadena(cadena);
+        if(t){
+            // cambiar el sout por lo de carlos
+            System.out.println("se acepto dentro de los automatas");
+           return;
+        }
+    }
+    System.out.println("Error de sintaxis o no existe un token asociado");
+}
 //***************************DE AFNL A AFN************************************
     public static AFN AFN_LambdaToAFN(AFN_Lambda afnl) {
 
@@ -30,7 +63,7 @@ public class ElAutomata {
             newSigma.add(afnl.getSigma().get(u));
 
         }
-        ArrayList<String> comparación = new ArrayList<>();//estos son los nuevos estados de aceptación
+        ArrayList<String> comparacion = new ArrayList<>();//estos son los nuevos estados de aceptación
         //inicializando newDelta
         for (int i = 0; i < afnl.getStates().size(); i++) {
             for (int j = 0; j < afnl.getSigma().size(); j++) {
@@ -41,12 +74,12 @@ public class ElAutomata {
         //calculando los nuevos estados de aceptación
         for (int i = 0; i < afnl.getStates().size(); i++) {
 
-            comparación.clear();
-            comparación = (ArrayList<String>) afnl.calcularLambdaClausura(afnl.getStates().get(i)).clone();
+            comparacion.clear();
+            comparacion = (ArrayList<String>) afnl.calcularLambdaClausura(afnl.getStates().get(i)).clone();
 
             for (int j = 0; j < afnl.getFinalStates().size(); j++) {
 
-                if (comparación.contains(afnl.getFinalStates().get(j))) {
+                if (comparacion.contains(afnl.getFinalStates().get(j))) {
 
                     if (!newFinalStates.isEmpty()) {
 
@@ -87,17 +120,18 @@ public class ElAutomata {
 
         }
 
-        for (int u = 0; u < newDelta.length; u++) {
+        /*for (int u = 0; u < newDelta.length; u++) {
 
             for (int v = 0; v < newDelta[u].length; v++) {
 
                 if (newDelta[u][v].isEmpty()) {
-                    newDelta[u][v].add(afnl.getStates().get(u));
+                    newDelta[u][v].add("s0");
                 }
 
             }
 
         }
+        */
 
         afn.initializeAFNwithData(newSigma, afnl.getStates(), afnl.getQ(), newFinalStates, newDelta);
 
@@ -241,7 +275,7 @@ public class ElAutomata {
                             AFDfinalStates.add(delta[stateindex][j].get(0));
                         }
                     } else {
-                        AFDdelta[i][j].add(delta[stateindex][j].get(0));
+
                     }
 
                 }
@@ -318,8 +352,9 @@ public class ElAutomata {
     public static AFD AFN_LambdaToAFD(AFN_Lambda afnl) {
 
         AFN afn = new AFN();
-
+        
         afn = AFN_LambdaToAFN(afnl);
+        afn.hallarEstadosInaccesibles();
         return AFNtoAFD(afn);
 
     }
@@ -328,8 +363,21 @@ public class ElAutomata {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws IOException {
+     ArrayList<AFN> afnlist;
+     afnlist = InicializadorDeAutomatas(1);
+     Scanner sc = new Scanner(System.in);
+        String opciones = ""; 
+        boolean exit = false;
+        while(exit != true){
+           opciones = sc.nextLine();
+           if(opciones.equals("exit")){
+           exit = true;
+           
+           }else{
+           ProbarEnTodosLosAutomatas(opciones,afnlist);
+           }
+        }
     }
 
 }
