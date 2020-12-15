@@ -331,7 +331,11 @@ public class ElAutomata {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
+        
         AFN_Lambda afnl = new AFN_Lambda();
+        afnl.initializeAFN_Lambda("prueba.txt");
+        afnl.showDelta();
+        /*AFN_Lambda afnl = new AFN_Lambda();
         afnl.initializeAFN_Lambda("AFN_Lambda1.txt");
         afnl.showDelta();
         AFN afn = new AFN();
