@@ -22,7 +22,6 @@ public class Writer {
   }
 
   public void writeFile() {
-    System.out.println("puta");
     try {
       AFNLambdaWriter afn = new AFNLambdaWriter(regexp);
       PrintWriter writer = new PrintWriter(nombreArchivo + ".txt", "UTF-8");
@@ -34,7 +33,6 @@ public class Writer {
       writer.println(afn.getEstadoInicial().toString());
       writer.println("#transitions");
       writer.println(afn.getListaTransiciones());
-      System.out.println("puta finalizo.");
       writer.close();
     } catch (IOException e) {
       e.printStackTrace();

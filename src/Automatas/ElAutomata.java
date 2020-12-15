@@ -5,6 +5,7 @@
  */
 package Automatas;
 
+import Regexp.Models.Definicion;
 import java.util.Scanner;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,18 +33,19 @@ public class ElAutomata {
         return afnlist;
     }
 
-    public static void ProbarEnTodosLosAutomatas(String cadena, ArrayList<AFN> afnlis) {
+    public static int ProbarEnTodosLosAutomatas(String cadena, ArrayList<AFN> afnlis) {
         int i;
         boolean t;
         for (i = 0; i < afnlis.size(); i++) {
             t = afnlis.get(i).procesarCadena(cadena);
             if (t) {
                 // cambiar el sout por lo de carlos
-                System.out.println("se acepto dentro de los automatas");
-                return;
+               // System.out.println("se acepto dentro de los automatas");
+                return i;
             }
         }
         System.out.println("Error de sintaxis o no existe un token asociado");
+        return -1;
     }
 
     // ***************************DE AFNL A AFN************************************
@@ -367,21 +369,6 @@ public class ElAutomata {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
-        ArrayList<AFN> afnlist;
-        afnlist = InicializadorDeAutomatas(1);
-        Scanner sc = new Scanner(System.in);
-        String opciones = "";
-        boolean exit = false;
-        while (exit != true) {
-            opciones = sc.nextLine();
-            if (opciones.equals("exit")) {
-                exit = true;
 
-            } else {
-                ProbarEnTodosLosAutomatas(opciones, afnlist);
-            }
-        }
-    }
 
 }

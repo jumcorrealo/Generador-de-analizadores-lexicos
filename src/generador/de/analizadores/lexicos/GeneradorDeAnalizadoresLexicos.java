@@ -154,7 +154,7 @@ public class GeneradorDeAnalizadoresLexicos {
             wr.writeFile();
             cont++;
         }
-
+        int posicion = 0;
         ArrayList<AFN> afnlist;
         afnlist = ElAutomata.InicializadorDeAutomatas(cont);
         System.out.println("Ingrese una oracion: (Solo puede ingresar una a la vez.)\n");
@@ -167,7 +167,10 @@ public class GeneradorDeAnalizadoresLexicos {
                 exit = true;
 
             } else {
-                ElAutomata.ProbarEnTodosLosAutomatas(opciones, afnlist);
+                posicion = ElAutomata.ProbarEnTodosLosAutomatas(opciones, afnlist);
+                if(posicion != -1){
+                System.out.println(defList.get(posicion).getRetorno());
+                }
             }
         }
 
