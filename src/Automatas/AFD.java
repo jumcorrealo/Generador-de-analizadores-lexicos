@@ -120,8 +120,10 @@ public class AFD {
         //System.out.println("Delta: ");
         for (int i = 0; i < states.size(); i++) {
             for (int j = 0; j < sigma.size(); j++) {
-                this.delta[i][j].add(delta[i][j].get(0));
+                for (int k = 0; k < delta[i][j].size(); k++) {
+                    this.delta[i][j].add(delta[i][j].get(k));
                 //System.out.print(this.delta[i][j].get(0) + " ");
+                }
             }
             //System.out.println("");
         }
@@ -200,7 +202,7 @@ public class AFD {
     
 //***************************PROCESAMIENTO****************************************    
         //Este metodo es el procesamiento
-        public boolean processString(AFD afd, String string, boolean imprimir) { //Procesar string con o sin detalles
+        public boolean processString(String string, boolean imprimir) { //Procesar string con o sin detalles
 
         if (imprimir == true) {
             System.out.print(string + "\n");
@@ -210,10 +212,10 @@ public class AFD {
         String actualSymbol; //char a leer
         int actualSymbolP; //columna del char a leer
 
-        actualState = afd.getQ();
+        actualState = this.getQ();
         //Ahora empezamos el proceso de la cadena
         while (!string.isEmpty() && !string.contains("$")) {
-            actualStateP = afd.getRow(actualState);
+            actualStateP = this.getRow(actualState);
             actualSymbol = Character.toString(string.charAt(0)); // quitamos la primera letra de la izquierda en cada iteración y luego actualizamos el string.
 
             if (string.length() > 1) {
@@ -225,11 +227,17 @@ public class AFD {
                 System.out.print("[" + actualState + "," + actualSymbol + string + "]->");
             }
 
-            actualSymbolP = afd.getColumn(actualSymbol);//buscamos la posición de ese simbolo en nuestra matriz(es algun lugar de la primera fila)
+            actualSymbolP = this.getColumn(actualSymbol);//buscamos la posición de ese simbolo en nuestra matriz(es algun lugar de la primera fila)
+            
+            //Caso en que se use una letra fuera del alfabeto
+            if(actualSymbolP == -1){
+                System.out.print("No aceptación\n");
+                return false;
+            }
+            
+            if (!this.getDelta()[actualStateP][actualSymbolP].isEmpty()) {
 
-            if (!afd.getDelta()[actualStateP][actualSymbolP].get(0).isEmpty()) {
-
-                actualState = afd.getDelta()[actualStateP][actualSymbolP].get(0);//Ya que esto es un AFD, siempre habra como maximo un elemento en esa posición
+                actualState = this.getDelta()[actualStateP][actualSymbolP].get(0);//Ya que esto es un AFD, siempre habra como maximo un elemento en esa posición
             } else {
                 break;
             }
@@ -238,8 +246,8 @@ public class AFD {
             System.out.print("[" + actualState + "]" + "\t");
         }
 
-        for (int k = 0; k < afd.getFinalStates().size(); k++) {
-            if (actualState.equals(afd.getFinalStates().get(k))) {
+        for (int k = 0; k < this.getFinalStates().size(); k++) {
+            if (actualState.equals(this.getFinalStates().get(k))) {
                 System.out.print("Aceptación\n");
                 return true;
             }
@@ -249,24 +257,18 @@ public class AFD {
 
     }
     //Este es el que se llama, y hace el procesamiento de ariba sin imprimir los detalles    
-    public boolean processString(AFD afd, String string) {//Procesar string SIN detalles
+    public boolean processString(String string) {//Procesar string SIN detalles
 
-        return processString(afd, string, false);
+        return processString(string, false);
     }
     //Este si los imprime
-    public boolean processStringWithDetails(AFD afd, String string) {//Procesar string CON detalles
+    public boolean processStringWithDetails(String string) {//Procesar string CON detalles
 
-        return processString(afd, string, true);
+        return processString(string, true);
     }
     
 //***************************PROCESAMIENTO****************************************        
 
-    public static void main(String[] args) throws Exception {
 
-        AFD afd = new AFD();
-        
-
-        
-    }
 
 }

@@ -326,11 +326,28 @@ public class AFN_Lambda {
         this.delta = delta;
     }
 //***************************GETTERS Y SETTERS************************************
+    
+    public void showDelta() {
+        System.out.println("#Transitions:");
+        for (int i = 0; i < this.states.size(); i++) {
+            for (int j = 0; j < this.sigma.size(); j++) {
+                if(!this.delta[i][j].isEmpty()){
+                System.out.print(this.states.get(i)+":");
+                System.out.print(this.sigma.get(j)+">");
+                for(int k=0;k<this.delta[i][j].size();k++){
+                    System.out.print(this.delta[i][j].get(k));
+                    if(k<this.delta[i][j].size()-1){
+                    System.out.print(";");
+                    }
+                }
+                }
+                if(!this.delta[i][j].isEmpty()){
+                    System.out.println("");
+                }
+            }
+        }
 
-    public static void main(String[] args) throws Exception {
-        AFN_Lambda afnl = new AFN_Lambda();
-
-        //afnl.initializeAFD("AFN_Lambda_entrega.txt");
     }
+
 
 }

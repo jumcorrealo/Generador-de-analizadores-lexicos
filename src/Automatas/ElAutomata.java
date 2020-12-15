@@ -5,6 +5,7 @@
  */
 package Automatas;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -87,17 +88,18 @@ public class ElAutomata {
 
         }
 
-        for (int u = 0; u < newDelta.length; u++) {
+        /*for (int u = 0; u < newDelta.length; u++) {
 
             for (int v = 0; v < newDelta[u].length; v++) {
 
                 if (newDelta[u][v].isEmpty()) {
-                    newDelta[u][v].add(afnl.getStates().get(u));
+                    newDelta[u][v].add("s0");
                 }
 
             }
 
         }
+        */
 
         afn.initializeAFNwithData(newSigma, afnl.getStates(), afnl.getQ(), newFinalStates, newDelta);
 
@@ -241,7 +243,7 @@ public class ElAutomata {
                             AFDfinalStates.add(delta[stateindex][j].get(0));
                         }
                     } else {
-                        AFDdelta[i][j].add(delta[stateindex][j].get(0));
+
                     }
 
                 }
@@ -328,8 +330,20 @@ public class ElAutomata {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws IOException {
+        AFN_Lambda afnl = new AFN_Lambda();
+        afnl.initializeAFN_Lambda("AFN_Lambda1.txt");
+        afnl.showDelta();
+        AFN afn = new AFN();
+        afn = AFN_LambdaToAFN(afnl);
+        afn.showDelta();
+        AFD afd = new AFD();
+        afd = AFNtoAFD(afn);
+        afd.showDelta();
+        afd.processStringWithDetails("abaa");
+        /*
+        afd.showDelta();
+        afd.processStringWithDetails("baaa");*/
     }
 
 }
