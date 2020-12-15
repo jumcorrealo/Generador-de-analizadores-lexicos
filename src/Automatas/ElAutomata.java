@@ -337,13 +337,11 @@ public class ElAutomata {
         AFN afn = new AFN();
         afn = AFN_LambdaToAFN(afnl);
         afn.showDelta();
+        afn.procesarCadena("aaaabaabbbbba");
         AFD afd = new AFD();
         afd = AFNtoAFD(afn);
-        afd.showDelta();
-        afd.processStringWithDetails("abaa");
-        /*
-        afd.showDelta();
-        afd.processStringWithDetails("baaa");*/
+        /*afd.showDelta();
+        afd.processStringWithDetails("abaa");*/
     }
 
 }
