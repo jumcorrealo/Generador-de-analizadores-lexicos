@@ -337,7 +337,7 @@ public class ElAutomata {
         AFN afn = new AFN();
         afn = AFN_LambdaToAFN(afnl);
         afn.showDelta();
-        afn.procesarCadena("aaaabaabbbbba");
+        afn.procesarCadena("c2131");
         AFD afd = new AFD();
         afd = AFNtoAFD(afn);
         /*afd.showDelta();

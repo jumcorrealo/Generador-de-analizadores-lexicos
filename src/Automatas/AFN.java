@@ -227,6 +227,11 @@ public class AFN {
         symbol = Character.toString(cadena.charAt(posChar));
 
         posSymbol = getColumn(symbol);
+        
+        if(posSymbol == -1){
+                System.out.print("No aceptación\n");
+                return false;
+            }
 
         if (!this.delta[posState][posSymbol].isEmpty()) {
             posChar++;
