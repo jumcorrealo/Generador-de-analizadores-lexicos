@@ -1,0 +1,5 @@
+constante false|true
+
+%%
+
+{constante} {Se detecto una constante}
