@@ -8,7 +8,7 @@ import java.util.Stack;
 import Regexp.SyntaxUtil.ExpSimplify;
 import Regexp.SyntaxUtil.PostFix;
 
-public class AFNLambda {
+public class AFNLambdaWriter {
 
   // Declaracion de atributos a usar en el AFN
   private List<Character> listaSimbolos;
@@ -30,7 +30,7 @@ public class AFNLambda {
   private ExpSimplify expressionSimplifier;
 
   // Constructor
-  public AFNLambda(String regExp) {
+  public AFNLambdaWriter(String regExp) {
 
     // Creacion de todas las estructuras
     listaSimbolos = new LinkedList<Character>();

@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Automatas;
+
 import java.util.Scanner;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,39 +16,37 @@ import java.util.Collections;
  */
 public class ElAutomata {
 
+    //
 
-
-    
-//
-    
-public static ArrayList<AFN> InicializadorDeAutomatas(int numeroDA) throws IOException{
+    public static ArrayList<AFN> InicializadorDeAutomatas(int numeroDA) throws IOException {
         int i;
         ArrayList<AFN> afnlist = new ArrayList();
         afnlist.clear();
         AFN_Lambda microafnl = new AFN_Lambda();
         AFN microafn = new AFN();
-        for(i=0;i<numeroDA;i++){
-        microafnl.initializeAFN_Lambda("prueba"+i+".txt");
-        microafn = AFN_LambdaToAFN(microafnl);
-        afnlist.add(microafn);
+        for (i = 1; i < numeroDA; i++) {
+            microafnl.initializeAFN_Lambda("definicion" + i + ".txt");
+            microafn = AFN_LambdaToAFN(microafnl);
+            afnlist.add(microafn);
         }
         return afnlist;
-}
-
-public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis){
-    int i;
-    boolean t;
-    for(i=0;i<afnlis.size();i++){
-        t = afnlis.get(i).procesarCadena(cadena);
-        if(t){
-            // cambiar el sout por lo de carlos
-            System.out.println("se acepto dentro de los automatas");
-           return;
-        }
     }
-    System.out.println("Error de sintaxis o no existe un token asociado");
-}
-//***************************DE AFNL A AFN************************************
+
+    public static void ProbarEnTodosLosAutomatas(String cadena, ArrayList<AFN> afnlis) {
+        int i;
+        boolean t;
+        for (i = 0; i < afnlis.size(); i++) {
+            t = afnlis.get(i).procesarCadena(cadena);
+            if (t) {
+                // cambiar el sout por lo de carlos
+                System.out.println("se acepto dentro de los automatas");
+                return;
+            }
+        }
+        System.out.println("Error de sintaxis o no existe un token asociado");
+    }
+
+    // ***************************DE AFNL A AFN************************************
     public static AFN AFN_LambdaToAFN(AFN_Lambda afnl) {
 
         AFN afn = new AFN();
@@ -55,7 +54,7 @@ public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis
         int columnsNumber = afnl.getSigma().size();
 
         ArrayList<String>[][] newDelta = new ArrayList[rowsNumber][columnsNumber]; // este es el delta del nuevo AFN
-        ArrayList<String> newFinalStates = new ArrayList<>();//estos son los nuevos estados de aceptación
+        ArrayList<String> newFinalStates = new ArrayList<>();// estos son los nuevos estados de aceptación
         ArrayList<Character> newSigma = new ArrayList<>();
 
         for (int u = 0; u < afnl.getSigma().size() - 1; u++) {
@@ -63,15 +62,15 @@ public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis
             newSigma.add(afnl.getSigma().get(u));
 
         }
-        ArrayList<String> comparacion = new ArrayList<>();//estos son los nuevos estados de aceptación
-        //inicializando newDelta
+        ArrayList<String> comparacion = new ArrayList<>();// estos son los nuevos estados de aceptación
+        // inicializando newDelta
         for (int i = 0; i < afnl.getStates().size(); i++) {
             for (int j = 0; j < afnl.getSigma().size(); j++) {
                 newDelta[i][j] = new ArrayList<String>();
             }
         }
 
-        //calculando los nuevos estados de aceptación
+        // calculando los nuevos estados de aceptación
         for (int i = 0; i < afnl.getStates().size(); i++) {
 
             comparacion.clear();
@@ -99,14 +98,16 @@ public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis
 
         Collections.sort(newFinalStates);
 
-        //Llenando la matriz newDelta
+        // Llenando la matriz newDelta
         for (int i = 0; i < rowsNumber; i++) {
             for (int j = 0; j < columnsNumber - 1; j++) {
                 ArrayList<String> states = new ArrayList<>();
-                states = afnl.calcularLambdaClausura(afnl.getStates().get(i));// Aqui inicia el proceso de calcular la lambda clausura de un estado
+                states = afnl.calcularLambdaClausura(afnl.getStates().get(i));// Aqui inicia el proceso de calcular la
+                                                                              // lambda clausura de un estado
                 String symbol = Character.toString(afnl.getSigma().get(j));
 
-                ArrayList<String> states2 = new ArrayList<>();//Ahora se mire a donde se llega con un simbolo y la lambda clausura del estado anterior
+                ArrayList<String> states2 = new ArrayList<>();// Ahora se mire a donde se llega con un simbolo y la
+                                                              // lambda clausura del estado anterior
                 states2 = afnl.ProcessStatesWithSymbol(states, symbol, afnl); // y los estados resultantes son states2
                 Collections.sort(states2);
 
@@ -120,18 +121,17 @@ public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis
 
         }
 
-        /*for (int u = 0; u < newDelta.length; u++) {
-
-            for (int v = 0; v < newDelta[u].length; v++) {
-
-                if (newDelta[u][v].isEmpty()) {
-                    newDelta[u][v].add("s0");
-                }
-
-            }
-
-        }
-        */
+        /*
+         * for (int u = 0; u < newDelta.length; u++) {
+         * 
+         * for (int v = 0; v < newDelta[u].length; v++) {
+         * 
+         * if (newDelta[u][v].isEmpty()) { newDelta[u][v].add("s0"); }
+         * 
+         * }
+         * 
+         * }
+         */
 
         afn.initializeAFNwithData(newSigma, afnl.getStates(), afnl.getQ(), newFinalStates, newDelta);
 
@@ -139,14 +139,16 @@ public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis
     }
 
     ;
-//***************************DE AFNL A AFN************************************
+    // ***************************DE AFNL A AFN************************************
 
-//***************************DE AFN A AFD*************************************
+    // ***************************DE AFN A AFD*************************************
 
     public static int getRow(String state, ArrayList<String> states) {
-        //esta función es para obtener la fila en la que se encuentra un estado (se asume columna 0)
+        // esta función es para obtener la fila en la que se encuentra un estado (se
+        // asume columna 0)
         for (int i = 0; i < states.size(); i++) {
-            //solo nos interesa la los elementos de la primera columna entonces por eso la fijamos en [j][0]
+            // solo nos interesa la los elementos de la primera columna entonces por eso la
+            // fijamos en [j][0]
             if (state.equals(states.get(i))) {
                 return i;
             }
@@ -158,7 +160,7 @@ public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis
         ArrayList<String> mydelta = delta;
         Collections.sort(mydelta);
 
-        //se concatenan los estados
+        // se concatenan los estados
         String newState = "";
         if (mydelta.size() > 1) {
             for (int i = 0; i < mydelta.size() - 1; i++) {
@@ -184,24 +186,24 @@ public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis
 
     public static AFD AFNtoAFD(AFN afn) {
 
-        //System.out.println("Iniciando transformacion de AFN a AFD\n\n");
-        //se almacena localmente el AFN para ser editado
+        // System.out.println("Iniciando transformacion de AFN a AFD\n\n");
+        // se almacena localmente el AFN para ser editado
         ArrayList<String>[][] delta = afn.getDelta();
         ArrayList<Character> sigma = afn.getSigma();
         ArrayList<String> AFNstates = afn.getStates();
         ArrayList<String> finalStates = afn.getFinalStates();
         String q = afn.getQ();
-        //tamaño original de la lista de estados
+        // tamaño original de la lista de estados
         int statesSize = AFNstates.size();
 
-        //nuevo estado para añadir
+        // nuevo estado para añadir
         String newState;
 
-        //datos del AFD producido
+        // datos del AFD producido
         ArrayList<String> AFDStates = new ArrayList<>();
         ArrayList<String> AFDfinalStates = new ArrayList<>();
         AFDStates.add(q);
-        //se crea una matriz de ArrayList para el AFD
+        // se crea una matriz de ArrayList para el AFD
         ArrayList<String>[][] AFDdelta = new ArrayList[statesSize * 3][sigma.size()];
         for (int i = 0; i < statesSize * 3; i++) {
             for (int j = 0; j < sigma.size(); j++) {
@@ -209,65 +211,66 @@ public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis
             }
         }
 
-        //si q0 esta en los estados finales, se añade a los de AFD
+        // si q0 esta en los estados finales, se añade a los de AFD
         if (finalStates.contains(q)) {
             AFDfinalStates.add(q);
         }
 
-        //Se imprime la matriz delta original
-        //System.out.print("  D  !!  ");
+        // Se imprime la matriz delta original
+        // System.out.print(" D !! ");
         for (int j = 0; j < sigma.size(); j++) {
-            //System.out.print(sigma.get(j) + "  |");
+            // System.out.print(sigma.get(j) + " |");
         }
-        //System.out.println("|");
+        // System.out.println("|");
 
         for (int i = 0; i < statesSize; i++) {
-            //System.out.print(AFNstates.get(i) + " !! ");
+            // System.out.print(AFNstates.get(i) + " !! ");
             for (int j = 0; j < sigma.size(); j++) {
-                //System.out.print(" ");
+                // System.out.print(" ");
                 for (int k = 0; k < delta[i][j].size(); k++) {
-                    //System.out.print(delta[i][j].get(k) + ";");
+                    // System.out.print(delta[i][j].get(k) + ";");
                 }
-                //System.out.print(" |");
+                // System.out.print(" |");
             }
-            //System.out.println("|");
+            // System.out.println("|");
         }
 
-        //System.out.println("----------------------------------");
-        //System.out.println("----------------------------------");
-        //recorre cada uno de los estados alcanzables por el AFD final
+        // System.out.println("----------------------------------");
+        // System.out.println("----------------------------------");
+        // recorre cada uno de los estados alcanzables por el AFD final
         for (int i = 0; i < AFDStates.size(); i++) {
 
-            //index para usar en la matriz delta del AFN
+            // index para usar en la matriz delta del AFN
             int stateindex = getRow(AFDStates.get(i), AFNstates);
 
-            //evalua si el estado pertenece a los estados del AFN original
+            // evalua si el estado pertenece a los estados del AFN original
             if (stateindex >= 0) {
 
-                //itera a través del sigma
+                // itera a través del sigma
                 for (int j = 0; j < sigma.size(); j++) {
 
-                    //si mas de un estados en el delta
+                    // si mas de un estados en el delta
                     if (delta[stateindex][j].size() > 1) {
 
-                        //concatena los estados a los que pasan
+                        // concatena los estados a los que pasan
                         newState = concatStates(delta[stateindex][j]);
 
-                        //añade el edge al estado con el que se calculo el index
+                        // añade el edge al estado con el que se calculo el index
                         AFDdelta[i][j].add(newState);
 
-                        //si este nuevo estado no esta registrado ya, lo añade
+                        // si este nuevo estado no esta registrado ya, lo añade
                         if (!AFDStates.contains(newState)) {
 
                             AFDStates.add(newState);
 
-                            //si tiene un estado final, lo añade a los estados finales
+                            // si tiene un estado final, lo añade a los estados finales
                             if (containsFinal(delta[stateindex][j], finalStates)) {
                                 AFDfinalStates.add(newState);
                             }
                         }
 
-                    } //si el estado pertenece a los estados del AFN original y no esta en los del AFD, se añade
+                    } // si el estado pertenece a los estados del AFN original y no esta en los del
+                      // AFD, se añade
                     else if (delta[stateindex][j].size() == 1 && !AFDStates.contains(delta[stateindex][j].get(0))) {
                         AFDStates.add(delta[stateindex][j].get(0));
                         AFDdelta[i][j].add(delta[stateindex][j].get(0));
@@ -280,31 +283,32 @@ public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis
 
                 }
 
-            } //Si el estado originario es uno de los estados concatenados
+            } // Si el estado originario es uno de los estados concatenados
             else {
 
-                //System.out.print(AFDStates.get(i) + " !! ");
-                //encontrar a los estados que puede saltar
+                // System.out.print(AFDStates.get(i) + " !! ");
+                // encontrar a los estados que puede saltar
                 ArrayList<String> newStates = new ArrayList<>();
 
-                //se divide el estado en sus componentes
+                // se divide el estado en sus componentes
                 String[] split = AFDStates.get(i).split(";");
 
-                //se ubica en una letra de sigma
+                // se ubica en una letra de sigma
                 for (int j = 0; j < sigma.size(); j++) {
 
-                    //se mueve por los diferentes Arraylist que contienen los estados que componen el estado
+                    // se mueve por los diferentes Arraylist que contienen los estados que componen
+                    // el estado
                     for (int k = 0; k < split.length; k++) {
 
-                        //index para usar en la matriz delta del AFN
+                        // index para usar en la matriz delta del AFN
                         int index = getRow(split[k], AFNstates);
 
-                        //itera sobre los diferentes estados del arraylist
+                        // itera sobre los diferentes estados del arraylist
                         for (int l = 0; l < delta[index][j].size(); l++) {
 
                             newState = delta[index][j].get(l);
 
-                            //si no esta contenido, lo añade
+                            // si no esta contenido, lo añade
                             if (!newStates.contains(newState)) {
                                 newStates.add(newState);
                             }
@@ -312,71 +316,71 @@ public static void ProbarEnTodosLosAutomatas(String cadena,ArrayList<AFN> afnlis
 
                     }
 
-                    //concatena los estados a los que pasan
+                    // concatena los estados a los que pasan
                     newState = concatStates(newStates);
 
-                    //añade el edge al estado con el que se calculo el index
+                    // añade el edge al estado con el que se calculo el index
                     AFDdelta[i][j].add(newState);
-                    //System.out.print(" " + newState + " |");
+                    // System.out.print(" " + newState + " |");
 
-                    //si este nuevo estado no esta registrado ya, lo añade
+                    // si este nuevo estado no esta registrado ya, lo añade
                     if (!AFDStates.contains(newState)) {
 
                         AFDStates.add(newState);
 
-                        //si tiene un estado final, lo añade a los estados finales
+                        // si tiene un estado final, lo añade a los estados finales
                         if (containsFinal(newStates, finalStates)) {
                             AFDfinalStates.add(newState);
                         }
                     }
 
-                    //se limpia el arraylist para volver a usarse
+                    // se limpia el arraylist para volver a usarse
                     newStates.clear();
                 }
-                //System.out.println("|");
+                // System.out.println("|");
             }
 
         }
 
-        //System.out.println("\n");
-        //se crea y se retorna el AFD producido
+        // System.out.println("\n");
+        // se crea y se retorna el AFD producido
         AFD afd = new AFD();
         afd.initializeAFDwithData(sigma, AFDStates, q, AFDfinalStates, AFDdelta);
 
-        //System.out.println("Terminando transformacion de AFN a AFD\n\n");
+        // System.out.println("Terminando transformacion de AFN a AFD\n\n");
         return afd;
     }
-//***************************DE AFN A AFD*************************************
+    // ***************************DE AFN A AFD*************************************
 
-//***************************DE AFNL A AFD*************************************
+    // ***************************DE AFNL A AFD*************************************
     public static AFD AFN_LambdaToAFD(AFN_Lambda afnl) {
 
         AFN afn = new AFN();
-        
+
         afn = AFN_LambdaToAFN(afnl);
         afn.hallarEstadosInaccesibles();
         return AFNtoAFD(afn);
 
     }
 
-//***************************DE AFNL A AFD*************************************    
+    // ***************************DE AFNL A AFD*************************************
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-     ArrayList<AFN> afnlist;
-     afnlist = InicializadorDeAutomatas(1);
-     Scanner sc = new Scanner(System.in);
-        String opciones = ""; 
+        ArrayList<AFN> afnlist;
+        afnlist = InicializadorDeAutomatas(1);
+        Scanner sc = new Scanner(System.in);
+        String opciones = "";
         boolean exit = false;
-        while(exit != true){
-           opciones = sc.nextLine();
-           if(opciones.equals("exit")){
-           exit = true;
-           
-           }else{
-           ProbarEnTodosLosAutomatas(opciones,afnlist);
-           }
+        while (exit != true) {
+            opciones = sc.nextLine();
+            if (opciones.equals("exit")) {
+                exit = true;
+
+            } else {
+                ProbarEnTodosLosAutomatas(opciones, afnlist);
+            }
         }
     }
 

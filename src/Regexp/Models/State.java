@@ -15,14 +15,14 @@ public class State {
     this.estadoId = estadoId;
     this.estadosPrevios = new LinkedList<State>();
     this.estadosSiguientes = new LinkedList<State>();
-    AFNLambda.stateCount++;
+    AFNLambdaWriter.stateCount++;
   }
 
   public State(int estadoId, List<State> estadoPrevio, List<State> estadoSiguiente) {
     this.estadoId = estadoId;
     this.estadosPrevios = estadoPrevio;
     this.estadosSiguientes = estadoSiguiente;
-    AFNLambda.stateCount++;
+    AFNLambdaWriter.stateCount++;
   }
 
   public State(int estadoId, boolean dfa) {

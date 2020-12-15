@@ -13,8 +13,8 @@ public class Transition {
 
     public Transition(String transitionSymbol) {
         this.transitionSymbol = transitionSymbol;
-        this.estadoInicial = new State(AFNLambda.stateCount);
-        this.estadoFinal = new State(AFNLambda.stateCount);
+        this.estadoInicial = new State(AFNLambdaWriter.stateCount);
+        this.estadoFinal = new State(AFNLambdaWriter.stateCount);
 
         /* add link to states */
         this.estadoInicial.addEstadoSiguiente(this.estadoFinal);
