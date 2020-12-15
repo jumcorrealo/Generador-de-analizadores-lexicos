@@ -136,20 +136,8 @@ public class GeneradorDeAnalizadoresLexicos {
             defList.get(i).ExpandRegexp();
         }
 
-        // // ArrayList<Declaracion> declaraciones = new ArrayList<>();
-        // ArrayList<Definicion> definiciones = new ArrayList<>();
-
-        // definiciones.add(new Definicion("definicion1", "b+(ab)*", "null"));
-        // definiciones.add(new Definicion("definicion2", "([)+", "null"));
-        // definiciones.add(new Definicion("definicion3", "(0|1|2|3|4|5|6|7|8|9)+",
-        // "null"));
-        // definiciones.add(new Definicion("definicion4", "(0|1|2|3|4|5|6|7|8|9)?",
-        // "null"));
-        // definiciones.add(new Definicion("definicion5", "a*", "null"));
-
         int cont = 1;
         for (Definicion definicion : defList) {
-            System.out.println("Entre aqui");
             Writer wr = new Writer(definicion, "definicion" + cont);
             wr.writeFile();
             cont++;

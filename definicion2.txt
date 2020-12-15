@@ -1,0 +1,8 @@
+#alphabet
+[a, c, s]
+#states
+[s0, s1, s2, s3, s4, s5, s6, s7]
+#initial
+[s0]
+#transitions
+[s0:c>s1, s2:a>s3, s1:$>s2, s4:s>s5, s3:$>s4, s6:a>s7, s5:$>s6]

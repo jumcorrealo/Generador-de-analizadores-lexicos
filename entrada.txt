@@ -1,5 +1,5 @@
-constante false|true
+numerobinario (0*|1*)*
 
 %%
 
-{constante} {Se detecto una constante}
+{numerobinario} {se ha detectado un numero binario.}

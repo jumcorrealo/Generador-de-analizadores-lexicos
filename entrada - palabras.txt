@@ -1,0 +1,14 @@
+arbol a*rbol
+casa casa
+perro perro
+en en
+el el
+fraseuno {casa}{en}{el}{arbol}
+frasedos {el}{perro}
+frasetres {fraseuno}|{frasedos}
+
+%%
+
+{arbol} {se ha detectado la palabra arbol}
+{casa} {se ha detectado la palabra casa}
+{frasetres} {se ha detectado una frase}
